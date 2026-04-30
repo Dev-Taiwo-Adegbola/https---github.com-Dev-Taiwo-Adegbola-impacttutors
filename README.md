@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Impact Tutors - Premium Learning Management System
 
-## Getting Started
+Impact Tutors is a professional, high-performance web application designed for a bespoke tutoring business. It features a robust Next.js frontend and a scalable Django REST Framework backend, providing a seamless experience for students, parents, and tutors.
 
-First, run the development server:
+## 🚀 Key Features
 
+### 🔐 Multi-Role Access Control
+- **Admin Dashboard**: Centralized hub for managing student/tutor applications, registration codes, courses, and live sessions. Includes global search and performance-tuned filtering.
+- **Student Dashboard**: Personalized view of upcoming classes, performance tracking, and course materials.
+- **Tutor Dashboard**: Dedicated interface for managing assigned students and scheduling sessions.
+
+### 📝 Secure Onboarding Flow
+- **Registration Codes**: Unique, role-specific invite codes are required for signups, ensuring a vetted user base.
+- **Unified Applications**: Integrated queues for both student and tutor applications with automated workflows for approval and enrollment.
+
+### 🎨 Premium User Experience
+- **Modern UI**: Built with Tailwind CSS and Lucide icons, featuring a sleek dark mode and smooth animations.
+- **Mobile Responsive**: Fully optimized for learning on any device.
+
+## 🛠 Tech Stack
+
+- **Frontend**: [Next.js](https://nextjs.org/) (App Router), [Tailwind CSS](https://tailwindcss.com/), [Framer Motion](https://www.framer.com/motion/).
+- **Backend**: [Django REST Framework](https://www.django-rest-framework.org/), [PostgreSQL](https://www.postgresql.org/) (recommended) / [SQLite](https://www.sqlite.org/) (base).
+- **Communication**: Secure API architecture with proxy-based authentication sync.
+
+## 📦 Getting Started
+
+### Prerequisites
+- Node.js (v18+)
+- Python (v3.10+)
+
+### 1. Backend Setup
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd backend
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Frontend Setup
+```bash
+# In the root directory
+npm install
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Environment Configuration
+Copy the `.env.example` files in both the root and `backend/` folders to `.env` and `.env.local` respectively, then fill in your credentials.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Deployment
 
-## Learn More
+### 1. Frontend (Vercel)
+The root of this repository is a Next.js project.
+- Connect your GitHub repo to [Vercel](https://vercel.com).
+- Add `NEXT_PUBLIC_API_URL` to your environment variables (pointing to your Render backend URL).
+- Vercel will automatically detect and build the project.
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Backend (Render)
+This project includes a `render.yaml` blueprint for one-click deployment.
+- Create a new "Blueprint Instance" on [Render](https://render.com).
+- Connect this repository.
+- Render will automatically provision a **PostgreSQL database** and a **Web Service** for the Django backend.
+- The `backend/build.sh` script handles migrations and static files automatically.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with passion by Impact Tutors.

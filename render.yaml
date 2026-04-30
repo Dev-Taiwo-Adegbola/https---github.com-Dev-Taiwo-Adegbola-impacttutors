@@ -1,0 +1,25 @@
+services:
+  # Backend (Django)
+  - type: web
+    name: impact-tutors-backend
+    env: python
+    rootDir: backend
+    buildCommand: ./build.sh
+    startCommand: gunicorn core.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: impact-tutors-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "impact-tutors-backend.onrender.com"
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://impact-tutors.vercel.app"
+
+databases:
+  - name: impact-tutors-db
+    plan: free
