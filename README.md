@@ -58,8 +58,9 @@ npm run dev
 This project includes a `render.yaml` blueprint for one-click deployment.
 - Create a new "Blueprint Instance" on [Render](https://render.com).
 - Connect this repository.
-- Render will automatically provision a **PostgreSQL database** and a **Web Service** for the Django backend.
-- The `backend/build.sh` script handles migrations and static files automatically.
+- **Database**: This setup uses the `db.sqlite3` file included in your repository.
+- **Warning**: Since the database is part of the repository, any changes made in production will be **OVERWRITTEN** on your next deployment. This is intended for testing only.
+- The `backend/build.sh` script handles migrations automatically.
 
 ---
 
