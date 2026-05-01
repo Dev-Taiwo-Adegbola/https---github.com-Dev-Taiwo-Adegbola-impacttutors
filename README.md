@@ -33,29 +33,26 @@ Impact Tutors is a professional, high-performance web application designed for a
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
+...
 ```
 
 ### 2. Frontend Setup
 ```bash
-# In the root directory
+cd frontend
 npm install
 npm run dev
 ```
 
 ### 3. Environment Configuration
-Copy the `.env.example` files in both the root and `backend/` folders to `.env` and `.env.local` respectively, then fill in your credentials.
+- **Backend**: Copy `backend/.env.example` to `backend/.env`.
+- **Frontend**: Copy `frontend/.env.example` to `frontend/.env.local`.
 
 ## 🚀 Deployment
 
 ### 1. Frontend (Vercel)
-The root of this repository is a Next.js project.
 - Connect your GitHub repo to [Vercel](https://vercel.com).
-- Add `NEXT_PUBLIC_API_URL` to your environment variables (pointing to your Render backend URL).
-- Vercel will automatically detect and build the project.
+- **CRITICAL**: Set the **Root Directory** to `frontend` in the project settings.
+- Add `NEXT_PUBLIC_API_URL` to your environment variables.
 
 ### 2. Backend (Render)
 This project includes a `render.yaml` blueprint for one-click deployment.
