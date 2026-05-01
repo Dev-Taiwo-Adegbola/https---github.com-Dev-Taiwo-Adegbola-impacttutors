@@ -19,7 +19,10 @@ export async function submitStudentApplication(formData: FormData) {
     await api.post("/student-applications/", data);
     return { success: true };
   } catch (error: any) {
-    return { error: error.message };
+    if (error.message === "Failed to fetch") {
+      return { error: "Submission error: We're having trouble connecting. Please check your internet and try again." };
+    }
+    return { error: error.message || "We couldn't submit your application just yet. Please review your details and try again." };
   }
 }
 
@@ -36,6 +39,9 @@ export async function submitTutorApplication(formData: FormData) {
     await api.post("/tutor-applications/", data);
     return { success: true };
   } catch (error: any) {
-    return { error: error.message };
+    if (error.message === "Failed to fetch") {
+      return { error: "Network trouble: We couldn't receive your application. Please check your connection and try again." };
+    }
+    return { error: error.message || "Something went wrong with your application submission. Please double-check your form and try again." };
   }
 }

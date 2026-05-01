@@ -53,6 +53,7 @@ npm run dev
 - Connect your GitHub repo to [Vercel](https://vercel.com).
 - **CRITICAL**: Set the **Root Directory** to `frontend` in the project settings.
 - Add `NEXT_PUBLIC_API_URL` to your environment variables.
+- **Example**: `https://impact-tutors-backend.onrender.com/api` (ensure it includes `/api`).
 
 ### 2. Backend (Render)
 This project includes a `render.yaml` blueprint for one-click deployment.

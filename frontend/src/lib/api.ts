@@ -1,6 +1,17 @@
 import { cookies } from "next/headers";
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+// Helper to ensure the base URL ends with /api (but not /api/)
+const getBaseUrl = () => {
+  let base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+  // If the user provided the base domain without /api, add it
+  if (!base.includes('/api')) {
+    base = base.endsWith('/') ? `${base}api` : `${base}/api`;
+  }
+  // Trim trailing slash for consistent concatenation
+  return base.endsWith('/') ? base.slice(0, -1) : base;
+};
+
+export const API_BASE_URL = getBaseUrl();
 
 type FetchOptions = RequestInit & {
   params?: Record<string, string | number>;
@@ -10,10 +21,9 @@ type FetchOptions = RequestInit & {
 async function betterFetch<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
   const { params, token, ...init } = options;
   
-  let url = `${API_BASE_URL}${endpoint}`;
-  if (!url.endsWith('/') && !url.includes('?')) {
-    url += '/';
-  }
+  // Ensure endpoint starts with a slash
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  let url = `${API_BASE_URL}${cleanEndpoint}`;
   
   if (params) {
     const searchParams = new URLSearchParams();
@@ -37,6 +47,35 @@ async function betterFetch<T>(endpoint: string, options: FetchOptions = {}): Pro
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
+    
+    // Handle field-level errors (e.g. {"email": ["Already exists"]})
+    if (typeof errorData === 'object' && !errorData.error && !errorData.detail) {
+      const firstField = Object.keys(errorData)[0];
+      if (firstField) {
+        const fieldError = errorData[firstField];
+        const rawMessage = Array.isArray(fieldError) ? fieldError[0] : fieldError;
+        
+        // Map common field names to friendly names
+        const fieldMap: Record<string, string> = {
+          email: "Email",
+          full_name: "Full Name",
+          invite_code: "Registration Code",
+          password: "Password",
+          phone: "Phone Number",
+          non_field_errors: "Error",
+        };
+
+        const fieldName = fieldMap[firstField] || firstField;
+        
+        // If it's a non-field error, just show the message
+        if (firstField === 'non_field_errors') {
+          throw new Error(rawMessage);
+        }
+        
+        throw new Error(`${fieldName}: ${rawMessage}`);
+      }
+    }
+
     throw new Error(errorData.error || errorData.detail || 'API request failed');
   }
 

@@ -30,7 +30,14 @@ export async function signUp(formData: FormData) {
       phone
     });
   } catch (error: any) {
-    return { error: error.message };
+    if (error.message === "Failed to fetch") {
+      return { error: "We're having trouble reaching our servers. Please check your internet connection and try again." };
+    }
+    // Specific messaging for registration codes
+    if (error.message.includes("Registration Code")) {
+      return { error: "The registration code you entered is invalid or has already been used. Please verify and try again." };
+    }
+    return { error: error.message || "We couldn't create your account. Please check your details and try again." };
   }
   
   // After registration, log them in to get tokens
@@ -76,7 +83,14 @@ export async function signIn(formData: FormData) {
       redirectPath = "/dashboard";
     }
   } catch (error: any) {
-    return { error: error.message };
+    if (error.message === "Failed to fetch") {
+      return { error: "Connection error: We can't reach the login server right now. Please try again in a moment." };
+    }
+    // Handle 401/403 or specific auth errors
+    if (error.message.includes("401") || error.message.toLowerCase().includes("no active account")) {
+      return { error: "We don't recognize that email or password. Please double-check your credentials." };
+    }
+    return { error: error.message || "We couldn't log you in. Please check your email and password." };
   }
 
   if (redirectPath) {
